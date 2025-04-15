@@ -1,5 +1,5 @@
 {
-  description = "Flake for Pharo-EDA-Core";
+  description = "Flake for BabyMock2 library for Pharo (fork of http://smalltalkhub.com/zeroflag/BabyMock2)";
 
   inputs = rec {
     flake-utils.url = "github:numtide/flake-utils/v1.0.0";
@@ -16,7 +16,8 @@
         org = "rydnr";
         repo = "babymock2";
         pname = "${repo}";
-        tag = "0.1";
+        tag = "0.1.1";
+        baseline = "ObjectDiff";
         pkgs = import nixpkgs { inherit system; };
         description = "BabyMock2 library for Pharo (fork of http://smalltalkhub.com/zeroflag/BabyMock2)";
         license = pkgs.lib.licenses.gpl3;
@@ -49,14 +50,13 @@
 
             unpackPhase = ''
               unzip -o ${bootstrap-image} -d image
-              # cp -r ${src} src
             '';
 
             configurePhase = ''
               runHook preConfigure
 
               # load baseline
-              ${pharo-vm}/bin/pharo image/${bootstrap-image-name} eval --save "EpMonitor current disable. NonInteractiveTranscript stdout install. [ Metacello new repository: 'tonel://${src}'; baseline: 'BabyMock2'; onConflictUseLoaded; load ] ensure: [ EpMonitor current enable ]"
+              ${pharo-vm}/bin/pharo image/${bootstrap-image-name} eval --save "EpMonitor current disable. NonInteractiveTranscript stdout install. [ Metacello new repository: 'tonel://${src}'; baseline: '${baseline}'; onConflictUseLoaded; load ] ensure: [ EpMonitor current enable ]"
 
               runHook postConfigure
             '';
@@ -91,9 +91,6 @@
 
             meta = {
               changelog = "https://github.com/rydnr/babymock2/releases/";
-              longDescription = ''
-                    Core part of the Pharo EDA stack.
-              '';
               inherit description homepage license maintainers;
               mainProgram = "pharo";
               platforms = pkgs.lib.platforms.linux;
