@@ -20,13 +20,13 @@ rec {
   shellHook-for = { nixpkgs-release, org, package, repo, tag }:
     ''
       export PS1="\033[37m[\[\033[01;34m\]${org}/${repo}\033[01;37m|\033[01;33m${tag}[\033[00m\] "
-      echo -e "\033[32m  _           _           \033[34m                     _    \033[35m___  \033[32mhttps://github.com/${org}\033[0m"
+      echo -e "\033[32m  _           _           \033[34m                     _    \033[35m___    \033[32mhttps://github.com/${org}\033[0m"
       echo -e "\033[32m | |         | |          \033[34m                    | |  \033[35m|__ \\ \033[0m"
-      echo -e "\033[32m | |__   __ _| |__  _   _ \033[34m_ __ ___   ___   ___| | __\033[35m  ) |\033[33mhttps://github.com/${org}/${repo}:${tag}\033[0m"
+      echo -e "\033[32m | |__   __ _| |__  _   _ \033[34m_ __ ___   ___   ___| | __\033[35m  ) |  \033[33mhttps://github.com/${org}/${repo}:${tag}\033[0m"
       echo -e "\033[32m | '_ \\ / _\` | '_ \\| | | |\033[34m '_ \` _ \\ / _ \\ / __| |/ /\033[35m / / "
-      echo -e "\033[32m | |_) | (_| | |_) | |_| |\033[34m | | | | | (_) | (__|   < \033[35m/ /_ \033[34mhttps://pharo.org\033[0m"
+      echo -e "\033[32m | |_) | (_| | |_) | |_| |\033[34m | | | | | (_) | (__|   < \033[35m/ /_   \033[34mhttps://pharo.org\033[0m"
       echo -e "\033[32m |_.__/ \\__,_|_.__/ \\__, |\033[34m_| |_| |_|\\___/ \\___|_|\\__\033[35m\\___|\033[0m"
-      echo -e "\033[32m                     __/ |                               \033[35mhttps://github.com/nixos/nixpkgs/tree/${nixpkgs-release}\033[0m"
+      echo -e "\033[32m                     __/ |                                 \033[35mhttps://github.com/nixos/nixpkgs/tree/${nixpkgs-release}\033[0m"
       echo -e "\033[32m                    |___/\033[0m"
       echo
       echo -e "Thank you for using \033[32m${package.pname}\033[0m \033[33m${package.version}\033[0m \033[31m(${org}/${repo}-${tag})\033[0m and for your appreciation of free software."

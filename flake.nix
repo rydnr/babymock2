@@ -4,9 +4,9 @@
   inputs = rec {
     flake-utils.url = "github:numtide/flake-utils/v1.0.0";
     nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
-    pharo-vm-12 = {
+    rydnr-nix-flakes-pharo-vm = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:rydnr/nix-flakes/pharo-vm-12.0.1519.2?dir=pharo-vm";
+      url = "github:rydnr/nix-flakes/pharo-vm-12.0.1519.4?dir=pharo-vm";
     };
   };
   outputs = inputs:
@@ -16,8 +16,8 @@
         org = "rydnr";
         repo = "babymock2";
         pname = "${repo}";
-        tag = "0.1.1";
-        baseline = "ObjectDiff";
+        tag = "0.1.2";
+        baseline = "BabyMock2";
         pkgs = import nixpkgs { inherit system; };
         description = "BabyMock2 library for Pharo (fork of http://smalltalkhub.com/zeroflag/BabyMock2)";
         license = pkgs.lib.licenses.gpl3;
@@ -50,13 +50,15 @@
 
             unpackPhase = ''
               unzip -o ${bootstrap-image} -d image
+              cp -r ${src} src
+              mkdir -p $out/share/src/${pname}
             '';
 
             configurePhase = ''
               runHook preConfigure
 
               # load baseline
-              ${pharo-vm}/bin/pharo image/${bootstrap-image-name} eval --save "EpMonitor current disable. NonInteractiveTranscript stdout install. [ Metacello new repository: 'tonel://${src}'; baseline: '${baseline}'; onConflictUseLoaded; load ] ensure: [ EpMonitor current enable ]"
+              ${pharo-vm}/bin/pharo image/${bootstrap-image-name} eval --save "EpMonitor current disable. NonInteractiveTranscript stdout install. [ Metacello new repository: 'tonel://$PWD/src'; baseline: '${baseline}'; onConflictUseLoaded; load ] ensure: [ EpMonitor current enable ]"
 
               runHook postConfigure
             '';
@@ -81,9 +83,11 @@
               cp -r ${pharo-vm}/lib $out
               cp -r dist/* $out/
               cp image/*.sources $out/
-              mkdir $out/share
-              pushd ${src}
+              pushd src
+              cp -r * $out/share/src/${pname}/
+              pushd $out/share/src/${pname}
               ${pkgs.zip}/bin/zip -r $out/share/src.zip .
+              popd
               popd
 
               runHook postInstall
@@ -109,10 +113,10 @@
         packages = rec {
           default = babymock2-pharo-12;
           babymock2-pharo-12 = babymock2-for rec {
-            bootstrap-image-url = pharo-vm-12.resources.${system}.bootstrap-image-url;
-            bootstrap-image-sha256 = pharo-vm-12.resources.${system}.bootstrap-image-sha256;
-            bootstrap-image-name = pharo-vm-12.resources.${system}.bootstrap-image-name;
-            pharo-vm = pharo-vm-12.packages.${system}.pharo-vm;
+            bootstrap-image-url = rydnr-nix-flakes-pharo-vm.resources.${system}.bootstrap-image-url;
+            bootstrap-image-sha256 = rydnr-nix-flakes-pharo-vm.resources.${system}.bootstrap-image-sha256;
+            bootstrap-image-name = rydnr-nix-flakes-pharo-vm.resources.${system}.bootstrap-image-name;
+            pharo-vm = rydnr-nix-flakes-pharo-vm.packages.${system}.pharo-vm;
           };
         };
       });

@@ -48,7 +48,14 @@
         "type": "github"
       }
     },
-    "pharo-vm-12": {
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "rydnr-nix-flakes-pharo-vm": "rydnr-nix-flakes-pharo-vm"
+      }
+    },
+    "rydnr-nix-flakes-pharo-vm": {
       "inputs": {
         "flake-utils": "flake-utils_2",
         "nixpkgs": [
@@ -57,26 +64,19 @@
       },
       "locked": {
         "dir": "pharo-vm",
-        "lastModified": 1744567847,
-        "narHash": "sha256-Am5h1E69nFUdjD+XDFRw7wB3Lr2k2bxrRKygy96LJCA=",
+        "lastModified": 1745082791,
+        "narHash": "sha256-Ik2AW/vJfuc8+KQwcLQfO1Heimhvc2JOzKsIki2omuQ=",
         "owner": "rydnr",
         "repo": "nix-flakes",
-        "rev": "6369c686e0d7d974e0de93685bd4b16615bb5113",
+        "rev": "9428ffc0c2241a7b9b8129ba3d369d7e2ef0ec6d",
         "type": "github"
       },
       "original": {
         "dir": "pharo-vm",
         "owner": "rydnr",
-        "ref": "pharo-vm-12.0.1519.2",
+        "ref": "pharo-vm-12.0.1519.4",
         "repo": "nix-flakes",
         "type": "github"
-      }
-    },
-    "root": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
-        "pharo-vm-12": "pharo-vm-12"
       }
     }
   },
