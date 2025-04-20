@@ -16,7 +16,7 @@
         org = "rydnr";
         repo = "babymock2";
         pname = "${repo}";
-        tag = "0.1.2";
+        tag = "0.1.3";
         baseline = "BabyMock2";
         pkgs = import nixpkgs { inherit system; };
         description = "BabyMock2 library for Pharo (fork of http://smalltalkhub.com/zeroflag/BabyMock2)";
@@ -51,7 +51,6 @@
             unpackPhase = ''
               unzip -o ${bootstrap-image} -d image
               cp -r ${src} src
-              mkdir -p $out/share/src/${pname}
             '';
 
             configurePhase = ''
@@ -66,12 +65,10 @@
             buildPhase = ''
               runHook preBuild
 
-              # assemble
               ${pharo-vm}/bin/pharo image/${bootstrap-image-name} save "${pname}"
 
               mkdir dist
               mv image/${pname}.* dist/
-
               runHook postBuild
             '';
 
@@ -83,6 +80,7 @@
               cp -r ${pharo-vm}/lib $out
               cp -r dist/* $out/
               cp image/*.sources $out/
+              mkdir -p $out/share/src/${pname}
               pushd src
               cp -r * $out/share/src/${pname}/
               pushd $out/share/src/${pname}
@@ -103,16 +101,16 @@
       in rec {
         defaultPackage = packages.default;
         devShells = rec {
-          default = babymock2-pharo-12;
-          babymock2-pharo-12 = shared.devShell-for {
-            package = packages.babymock2-pharo-12;
+          default = babymock2-12;
+          babymock2-12 = shared.devShell-for {
+            package = packages.babymock2-12;
             inherit org pkgs repo tag;
             nixpkgs-release = nixpkgsRelease;
           };
         };
         packages = rec {
-          default = babymock2-pharo-12;
-          babymock2-pharo-12 = babymock2-for rec {
+          default = babymock2-12;
+          babymock2-12 = babymock2-for rec {
             bootstrap-image-url = rydnr-nix-flakes-pharo-vm.resources.${system}.bootstrap-image-url;
             bootstrap-image-sha256 = rydnr-nix-flakes-pharo-vm.resources.${system}.bootstrap-image-sha256;
             bootstrap-image-name = rydnr-nix-flakes-pharo-vm.resources.${system}.bootstrap-image-name;
